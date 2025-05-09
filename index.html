@@ -8,12 +8,21 @@
       font-family: sans-serif;
       margin: 0;
       padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      text-align: center;
     }
     .folder-title {
       margin-top: 40px;
+      font-size: 1.5em;
+      text-align: center;
     }
     .image-row {
       display: flex;
+      justify-content: center;
       align-items: center;
       margin-bottom: 20px;
       width: 100%;
@@ -21,16 +30,20 @@
     .image-row .image-container,
     .image-row .text-container {
       width: 50%;
+      padding: 20px;
       box-sizing: border-box;
-      padding: 10px;
+      text-align: center;
     }
     .image-row img {
-      max-width: 100%;
+      max-width: 80%;
       height: auto;
+      margin: 0 auto;
     }
     .text-container p {
-      font-size: 1.2em;
+      font-size: 2.5em; /* Large text */
       margin: 0;
+      font-weight: bold;
+      line-height: 1.2;
     }
   </style>
 </head>
@@ -73,7 +86,7 @@
           const textContainer = document.createElement('div');
           textContainer.className = 'text-container';
 
-          const label = document.createElement('h3');
+          const label = document.createElement('p');
           label.textContent = name;
 
           textContainer.appendChild(label);
