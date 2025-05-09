@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Canonical Crab Champions Island Names</title>
+</head>
+<body>
+  <h1>Canonical Crab Champions Island Names</h1>
+  <div id="content"></div>
+
+  <script>
+    // List of folders to process
+    const folders = ['Tropical', 'Arctic', 'Desert', 'Volcanic']; // Add more folder names here
+
+    async function loadFolder(folder) {
+      const contentDiv = document.getElementById('content');
+
+      // Add folder title
+      const title = document.createElement('h2');
+      title.textContent = `${folder}`;
+      contentDiv.appendChild(title);
+
+      // Fetch names.txt
+      try {
+        const response = await fetch(`${folder}/names.txt`);
+        const text = await response.text();
+        const names = text.trim().split('\n');
+
+        names.forEach((name, index) => {
+          const imageNumber = String(index + 1).padStart(2, '0'); // 01, 02, ...
+          const imagePath = `${folder}/${imageNumber}.jpg`;
+
+          const container = document.createElement('div');
+          container.style.marginBottom = '20px';
+
+          const img = document.createElement('img');
+          img.src = imagePath;
+          img.alt = name;
+          img.width = 200;
+
+          const label = document.createElement('p');
+          label.textContent = name;
+
+          container.appendChild(img);
+          container.appendChild(label);
+          contentDiv.appendChild(container);
+        });
+      } catch (err) {
+        print(err);
+        const error = document.createElement('p');
+        error.textContent = `Could not load folder: ${folder}`;
+        contentDiv.appendChild(error);
+      }
+    }
+
+    async function loadAll() {
+      for (const folder of folders) {
+        await loadFolder(folder);
+      }
+    }
+
+    loadAll();
+  </script>
+</body>
+</html>
