@@ -1,39 +1,44 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <meta charset="UTF-8">
   <title>Canonical Crab Champions Island Names</title>
+  <style>
+    .image-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .image-row img {
+      margin-right: 20px;
+    }
+  </style>
 </head>
-
 <body>
   <h1>Canonical Crab Champions Island Names</h1>
   <div id="content"></div>
 
   <script>
-    // List of folders to process
     const folders = ['Tropical', 'Arctic', 'Desert', 'Volcanic']; // Add more folder names here
 
     async function loadFolder(folder) {
       const contentDiv = document.getElementById('content');
 
-      // Add folder title
       const title = document.createElement('h2');
       title.textContent = `${folder}`;
       contentDiv.appendChild(title);
 
-      // Fetch names.txt
       try {
         const response = await fetch(`${folder}/names.txt`);
         const text = await response.text();
         const names = text.trim().split('\n');
 
         names.forEach((name, index) => {
-          const imageNumber = String(index + 1).padStart(2, '0'); // 01, 02, ...
+          const imageNumber = String(index + 1).padStart(2, '0');
           const imagePath = `${folder}/${imageNumber}.jpg`;
 
-          const container = document.createElement('div');
-          container.style.marginBottom = '20px';
+          const row = document.createElement('div');
+          row.className = 'image-row';
 
           const img = document.createElement('img');
           img.src = imagePath;
@@ -43,12 +48,11 @@
           const label = document.createElement('h3');
           label.textContent = name;
 
-          container.appendChild(img);
-          container.appendChild(label);
-          contentDiv.appendChild(container);
+          row.appendChild(img);
+          row.appendChild(label);
+          contentDiv.appendChild(row);
         });
       } catch (err) {
-        print(err);
         const error = document.createElement('p');
         error.textContent = `Could not load folder: ${folder}`;
         contentDiv.appendChild(error);
@@ -64,5 +68,4 @@
     loadAll();
   </script>
 </body>
-
 </html>
