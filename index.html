@@ -4,13 +4,33 @@
   <meta charset="UTF-8">
   <title>Canonical Crab Champions Island Names</title>
   <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+    .folder-title {
+      margin-top: 40px;
+    }
     .image-row {
       display: flex;
       align-items: center;
       margin-bottom: 20px;
+      width: 100%;
+    }
+    .image-row .image-container,
+    .image-row .text-container {
+      width: 50%;
+      box-sizing: border-box;
+      padding: 10px;
     }
     .image-row img {
-      margin-right: 20px;
+      max-width: 100%;
+      height: auto;
+    }
+    .text-container p {
+      font-size: 1.2em;
+      margin: 0;
     }
   </style>
 </head>
@@ -25,6 +45,7 @@
       const contentDiv = document.getElementById('content');
 
       const title = document.createElement('h2');
+      title.className = 'folder-title';
       title.textContent = `${folder}`;
       contentDiv.appendChild(title);
 
@@ -40,16 +61,25 @@
           const row = document.createElement('div');
           row.className = 'image-row';
 
+          const imageContainer = document.createElement('div');
+          imageContainer.className = 'image-container';
+
           const img = document.createElement('img');
           img.src = imagePath;
           img.alt = name;
-          img.width = 1000;
 
-          const label = document.createElement('h3');
+          imageContainer.appendChild(img);
+
+          const textContainer = document.createElement('div');
+          textContainer.className = 'text-container';
+
+          const label = document.createElement('p');
           label.textContent = name;
 
-          row.appendChild(img);
-          row.appendChild(label);
+          textContainer.appendChild(label);
+
+          row.appendChild(imageContainer);
+          row.appendChild(textContainer);
           contentDiv.appendChild(row);
         });
       } catch (err) {
