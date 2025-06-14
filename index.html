@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8">
   <title>Canonical Crab Champions Island Names</title>
@@ -12,14 +13,17 @@
       flex-direction: column;
       align-items: center;
     }
+
     h1 {
       text-align: center;
     }
+
     .folder-title {
       margin-top: 40px;
       font-size: 1.5em;
       text-align: center;
     }
+
     .image-row {
       display: flex;
       justify-content: center;
@@ -27,6 +31,7 @@
       margin-bottom: 20px;
       width: 100%;
     }
+
     .image-row .image-container,
     .image-row .text-container {
       width: 50%;
@@ -34,25 +39,29 @@
       box-sizing: border-box;
       text-align: center;
     }
+
     .image-row img {
       max-width: 90%;
       height: auto;
       margin: 0 auto;
     }
+
     .text-container p {
-      font-size: 2.5em; /* Large text */
+      font-size: 2.5em;
+      /* Large text */
       margin: 0;
       font-weight: bold;
       line-height: 1.2;
     }
   </style>
 </head>
+
 <body>
   <h1>Canonical Crab Champions Island Names</h1>
   <div id="content"></div>
 
   <script>
-    const folders = ['Tropical', 'Arctic', 'Desert', 'Volcanic']; // Add more folder names here
+    const folders = ['Tropical', 'Arctic', 'Desert', 'Volcanic'];
 
     async function loadFolder(folder) {
       const contentDiv = document.getElementById('content');
@@ -69,10 +78,17 @@
 
         names.forEach((name, index) => {
           const imageNumber = String(index + 1).padStart(2, '0');
+          const anchorId = `${folder}-${imageNumber}`;
           const imagePath = `${folder}/${imageNumber}.jpg`;
+
+          const anchor = document.createElement('a');
+          anchor.href = `#${anchorId}`;
+          anchor.style.textDecoration = 'none';
+          anchor.style.color = 'inherit';
 
           const row = document.createElement('div');
           row.className = 'image-row';
+          row.id = anchorId;
 
           const imageContainer = document.createElement('div');
           imageContainer.className = 'image-container';
@@ -93,7 +109,8 @@
 
           row.appendChild(imageContainer);
           row.appendChild(textContainer);
-          contentDiv.appendChild(row);
+          anchor.appendChild(row);
+          contentDiv.appendChild(anchor);
         });
       } catch (err) {
         const error = document.createElement('p');
@@ -103,12 +120,20 @@
     }
 
     async function loadAll() {
-      for (const folder of folders) {
-        await loadFolder(folder);
+      await Promise.all(folders.map(loadFolder));
+
+      // Scroll to hash if it exists on load
+      if (location.hash) {
+        const target = document.querySelector(location.hash);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
       }
     }
 
     loadAll();
   </script>
+
 </body>
+
 </html>
