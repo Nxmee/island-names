@@ -63,12 +63,22 @@
   <script>
     const folders = ['Tropical', 'Arctic', 'Desert', 'Volcanic'];
 
+    // Convert a name to a URL-safe ID
+    function slugify(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^\w\s-]/g, '')       // Remove non-word characters
+        .replace(/\s+/g, '-')           // Replace spaces with dashes
+        .replace(/-+/g, '-')            // Collapse multiple dashes
+        .trim();
+    }
+
     async function loadFolder(folder) {
       const contentDiv = document.getElementById('content');
 
       const title = document.createElement('h2');
       title.className = 'folder-title';
-      title.textContent = `${folder}`;
+      title.textContent = folder;
       contentDiv.appendChild(title);
 
       try {
@@ -77,14 +87,9 @@
         const names = text.trim().split('\n');
 
         names.forEach((name, index) => {
-          const imageNumber = String(index + 1).padStart(2, '0');
-          const anchorId = `${folder}-${imageNumber}`;
-          const imagePath = `${folder}/${imageNumber}.jpg`;
-
-          const anchor = document.createElement('a');
-          anchor.href = `#${anchorId}`;
-          anchor.style.textDecoration = 'none';
-          anchor.style.color = 'inherit';
+          const slug = slugify(name);
+          const anchorId = `${folder.toLowerCase()}-${slug}`;
+          const imagePath = `${folder}/${String(index + 1).padStart(2, '0')}.jpg`;
 
           const row = document.createElement('div');
           row.className = 'image-row';
@@ -96,21 +101,25 @@
           const img = document.createElement('img');
           img.src = imagePath;
           img.alt = name;
-
           imageContainer.appendChild(img);
 
           const textContainer = document.createElement('div');
           textContainer.className = 'text-container';
 
+          const labelLink = document.createElement('a');
+          labelLink.href = `#${anchorId}`;
+          labelLink.style.textDecoration = 'none';
+          labelLink.style.color = 'inherit';
+
           const label = document.createElement('p');
           label.textContent = name;
 
-          textContainer.appendChild(label);
+          labelLink.appendChild(label);
+          textContainer.appendChild(labelLink);
 
           row.appendChild(imageContainer);
           row.appendChild(textContainer);
-          anchor.appendChild(row);
-          contentDiv.appendChild(anchor);
+          contentDiv.appendChild(row);
         });
       } catch (err) {
         const error = document.createElement('p');
@@ -133,6 +142,7 @@
 
     loadAll();
   </script>
+
 
 </body>
 
